@@ -723,8 +723,7 @@ void PlasmaStore::send_notifications(int client_fd,
 }
 
 void PlasmaStore::push_notification(ObjectInfoT* object_info) {
-  auto it = pending_notifications_.begin();
-  while (it != pending_notifications_.end()) {
+  for (auto& element : pending_notifications_) {
     auto notification = create_object_info_buffer(object_info);
     element.second.object_notifications.emplace_back(std::move(notification));
     send_notifications(element.first, pending_notifications_);
@@ -790,7 +789,6 @@ void PlasmaStore::subscribe_to_queue_updates(Client* client, const ObjectID& obj
   }
   send_notifications(fd);
 */
->>>>>>> d304c425... Rewrite code logic so that client gets queue items via notification instead of reading directly from raw buffer (right now only support local writer & reader)
 }
 
 Status PlasmaStore::process_message(Client* client) {
