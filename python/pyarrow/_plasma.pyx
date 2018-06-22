@@ -476,7 +476,7 @@ cdef class PlasmaClient:
         cdef shared_ptr[CBuffer] buf
         buf.reset(new CMutableBuffer(data.get().mutable_data(),
                                         serialized.total_bytes))
-        Buffer buffer = Buffer()
+        buffer = Buffer()
         buffer.init(buf)
 
         stream = pyarrow.FixedSizeBufferWriter(buffer)
