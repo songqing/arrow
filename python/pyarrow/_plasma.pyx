@@ -472,9 +472,10 @@ cdef class PlasmaClient:
         cdef shared_ptr[CBuffer] data
         check_status(self.client.get().CreateQueueItem(target_id.data,
             serialized.total_bytes, &data, seq_id))
-        buffer = self._make_mutable_plasma_buffer(target_id,
-                                                data.get().mutable_data(),
-                                                serialized.total_bytes)
+
+        cdef shared_ptr[CBuffer] buffer
+        buffer.reset(new CMutableBuffer(data.get().mutable_data(),
+                                        serialized.total_bytes))
 
         stream = pyarrow.FixedSizeBufferWriter(buffer)
         stream.set_memcopy_threads(memcopy_threads)
